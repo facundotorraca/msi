@@ -7,14 +7,12 @@ terraform {
   }
 }
 
-data "cloudflare_zones" "my_zone" {
-  filter {
-    name = var.domain
-  }
+data "cloudflare_zone" "bwapp_domain_zone" {
+  name = var.domain
 }
 
 resource "cloudflare_record" "bwapp" {
-  zone_id = data.cloudflare_zones.my_zone.id
+  zone_id = data.cloudflare_zone.bwapp_domain_zone.id
   name    = var.domain
   value   = var.instance_public_ip
   type    = "A"
