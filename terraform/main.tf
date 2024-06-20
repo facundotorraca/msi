@@ -1,4 +1,10 @@
 terraform {
+  backend "s3" {
+    bucket         = "ft-msi-terraform"
+    key            = "dev/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+  }
   required_providers {
     aws = {
       source = "hashicorp/aws"
@@ -27,5 +33,5 @@ module "bwapp_ec2" {
 module "bwapp_cloudflare" {
   source             = "./modules/cloudflare"
   domain             = var.app_domain
-  instance_public_ip = module.bwapp_ec2_instance.public_ip 
+  instance_public_ip = module.bwapp_ec2.public_ip 
 }
