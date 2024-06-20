@@ -12,3 +12,8 @@ output "ec2_public_dns" {
   description = "BWapp EC2 Instance Public DNS"
   value       = module.bwapp_ec2_instance.public_dns
 }
+
+output "cloudflare_record" {
+  description = "Cloudflare record for the BWAPP instance"
+  value       = module.bwapp_cloudflare_record.record
+}

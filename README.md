@@ -8,9 +8,12 @@ La instancia se creará con un par de claves especificado para el acceso seguro 
 
 ## Requisitos previos
 
-1. **Cuenta de AWS**: Debes tener una cuenta de AWS.
-2. **AWS CLI**: Instalar y configurar AWS CLI con los permisos necesarios.
-3. **Terraform**: Instalar Terraform en tu máquina local.
+1. **Cuenta de AWS**: Debes tener una cuenta de [AWS](https://aws.amazon.com/).
+2. **Cuenta en Cloudflare**: Debes tener una cuenta en [Cloudflare](www.cloudflare.com)
+3. **Un dominio**: Puedes comprar un _.xyz_ por $1 USD en [Namecheap](www.namecheap.com)
+
+3. **AWS CLI**: Instalar y configurar AWS CLI con los permisos necesarios.
+4. **Terraform**: Instalar Terraform en tu máquina local.
 
 ## Setup
 
