@@ -20,12 +20,12 @@ provider "cloudflare" {
 }
 
 
-module "bwapp_ec2_instance" {
+module "bwapp_ec2" {
   source = "./modules/ec2"
 }
 
-module "bwapp_cloudflare_record" {
+module "bwapp_cloudflare" {
   source             = "./modules/cloudflare"
-  domain             = var.domain
+  domain             = var.app_domain
   instance_public_ip = module.bwapp_ec2_instance.public_ip 
 }
