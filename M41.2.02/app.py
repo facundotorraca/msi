@@ -1,84 +1,45 @@
-from pydantic import BaseModel
-from fastapi import FastAPI, HTTPException
+import payloads
+from fastapi import FastAPI
+from services.revoker import RevokerService
 from services.generator import GeneratorService
 from services.validator import ValidatorService
-from cryptography.hazmat.primitives import serialization
-from utils.crypto import load_pem_x509_csr, load_pem_x509_certificate
 
 ##################### APP #######################
-app = FastAPI()
+app = FastAPI("MSI Certificate Authority")
+#################################################
+
+################ ROOT CERTIFICATE ###############
+ROOT_KEY_PATH = "certs/root-ca.key"
+ROOT_CERT_PATH = "certs/root-ca.pem"
+
+with open(ROOT_CERT_PATH, "rb") as f:
+    root_cert_pem = f.read()
+with open(ROOT_KEY_PATH, "rb") as f:
+    root_key_pem = f.read()
 #################################################
 
 #################### SERVICES ###################
-generator = GeneratorService()
-validator = ValidatorService()
+revoker = RevokerService(root_cert_pem, root_key_pem)
+validator = ValidatorService(root_cert_pem)
+generator = GeneratorService(root_cert_pem, root_key_pem)
 #################################################
-
-
-# Example storage for issued certificates
-# (replace with proper storage solution in production)
-issued_certificates = {}
-
-
-################### ENDPOINTS #################
-
-
-class CSRRequest(BaseModel):
-    csr_pem: str
-
-
-class CertificateRequest(BaseModel):
-    cert_pem: str
 
 
 @app.post("/generate")
-def generate_certificate(csr_request: CSRRequest):
-    try:
-        # Receive CSR from client
-        csr = load_pem_x509_csr(csr_request.csr_pem.encode())
-
-        # Generate certificate
-        cert = generator.generate_certificate(csr, ca_cert, ca_private_key)
-
-        # Store issued certificate (replace with proper storage solution in production)
-        issued_certificates[cert.subject.serial_number] = cert
-
-        return cert.public_bytes(serialization.Encoding.PEM), 201
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+async def generate_certificate(request: payloads.CertificateRequest):
+    private_key, certificate = generator.generate_certificate(
+        request.subject_name, request.is_ca, request.path_length
+    )
+    return {"private_key": private_key.decode(), "certificate": certificate.decode()}
 
 
 @app.post("/verify")
-def verify_certificate(cert_request: CertificateRequest):
-    try:
-        # Receive certificate from client
-        cert = load_pem_x509_certificate(cert_request.cert_pem.encode())
-
-        # Verify certificate
-        verified, error = validator.verify_certificate(cert, ca_cert)
-
-        if verified:
-            return {"verified": True}
-        else:
-            raise HTTPException(status_code=400, detail=f"Certificate verification failed: {error}")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+async def verify_certificate(request: payloads.VerificationRequest):
+    is_valid = validator.verify_certificate(request.cert_pem.encode())
+    return {"is_valid": is_valid}
 
 
 @app.post("/revoke")
-def revoke_certificate(cert_request: CertificateRequest):
-    try:
-        # Receive certificate to revoke from client
-        cert = load_pem_x509_certificate(cert_request.cert_pem.encode())
-
-        # Revoke certificate (replace with proper revocation process in production)
-        if cert.subject.serial_number in issued_certificates:
-            del issued_certificates[cert.subject.serial_number]
-            return {"revoked": True}
-        else:
-            raise HTTPException(status_code=404, detail="Certificate not found")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-#################################################
+async def revoke_certificate(request: payloads.RevocationRequest):
+    crl = revoker.revoke_certificate(request.cert_pem.encode())
+    return {"crl": crl.decode()}
