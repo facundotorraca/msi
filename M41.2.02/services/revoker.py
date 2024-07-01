@@ -2,12 +2,13 @@ from datetime import datetime
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.serialization import load_pem_private_key
 
 
 class RevokerService:
     def __init__(self, root_cert_pem: bytes, root_key_pem: bytes):
         self.root_cert = x509.load_pem_x509_certificate(root_cert_pem)
-        self.root_private_key = x509.load_pem_private_key(root_key_pem, password=None)
+        self.root_private_key = load_pem_private_key(root_key_pem, password=None)
 
     def revoke_certificate(self, cert_pem: bytes) -> bytes:
         cert_to_revoke = x509.load_pem_x509_certificate(cert_pem)

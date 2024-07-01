@@ -8,7 +8,7 @@ como la generación, verificación y revocación de certificados.
 
 - **OpenSSL**: Necesario para generar el certificado raíz.
 - **Python 3.8 o superior**
-- **Uvicorn**: Servidor para ejecutar aplicaciones FastAPI.+
+- **Uvicorn**: Servidor para ejecutar aplicaciones FastAPI
 - **Curl**: Optional to the test cases
 
 ## Instalación
@@ -47,19 +47,40 @@ Este comando guardará los certificados y su correspondiente clave privada en `c
 * `certs/root-ca.key`
 
 2. **Configurar y Ejecutar el Servidor FastAPI**:
- 
+
+recomendado:
+
+```sh
+sh ./script/startca.sh
+```
+
+or con uvicorn
+
 ```sh
 uvicorn main:app --reload
 ```
 
+> *__NOTE__*: By default, the app will run on port **8000**. You will be able to access it locally on  `http://localhost:8000`
+
 ## Uso de CA
+
+A continuación mostraremos ejemplos para los 3 endpoints:
+
+* **generate**: Genera un nuevo certificado hijo del certificado root
+* **verify**: Verifica que el certificado sea valido y emitido por le CA
+* **revoke**: Agrega un certificado a la lista de revocados
+
+> *__NOTE__ 1*: Vamos a asumir que la app esta corriendo en la URL default ``http://localhost:8000``
+
+> *__NOTE__ 2*: La aplicación ademas cuenta con documentación en swagger, que podrá ser accedida por: `http://localhost:8000/docs`
+
 
 ### 1. Ejemplo de Generación de Certiticado:
 
 Para generar un nuevo certificado mediante curl, ejecuta el siguiente comando:
 
 ```sh
-curl -X POST "http://localhost:8000/generate-certificate/" \
+curl -X POST "http://localhost:8000/generate" \
      -H "Content-Type: application/json" \
      -d '{
          "subject_name": "example.com",
@@ -72,7 +93,7 @@ curl -X POST "http://localhost:8000/generate-certificate/" \
 Para verificar un certificado mediante curl, usa el siguiente comando, asegurándote de reemplazar el contenido del certificado correctamente:
 
 ```sh
-curl -X POST "http://localhost:8000/verify-certificate/" \
+curl -X POST "http://localhost:8000/verify" \
      -H "Content-Type: application/json" \
      -d '{
          "cert_pem": "-----BEGIN CERTIFICATE-----\\nMIID...\\n-----END CERTIFICATE-----"
@@ -83,7 +104,7 @@ curl -X POST "http://localhost:8000/verify-certificate/" \
 Para revocar un certificado utilizando curl, utiliza el siguiente comando:
 
 ```sh
-curl -X POST "http://localhost:8000/revoke-certificate/" \
+curl -X POST "http://localhost:8000/revoke" \
      -H "Content-Type: application/json" \
      -d '{
          "cert_pem": "-----BEGIN CERTIFICATE-----\\nMIID...\\n-----END CERTIFICATE-----"

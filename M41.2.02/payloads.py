@@ -6,7 +6,7 @@ class CertificateRequest(BaseModel):
     is_ca: bool = Field(
         default=False, description="Flag indicating if this certificate should be a CA"
     )
-    path_length: int = Field(
+    path_length: int | None = Field(
         default=None, description="The path length constraint for CA certificates, if applicable"
     )
 
