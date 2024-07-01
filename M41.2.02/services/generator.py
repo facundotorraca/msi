@@ -37,17 +37,14 @@ class GeneratorService:
             .not_valid_after(n_days_from_now(_DEFAULT_VALIDITY_IN_DAYS))
             .serial_number(x509.random_serial_number())
             .public_key(pub_key)
-            .add_extension(
-                x509.BasicConstraints(ca=is_ca, path_length=path_length),
-                critical=True,
-            )
+            .add_extension(x509.BasicConstraints(ca=is_ca, path_length=path_length), critical=True)
             .sign(private_key=self.root_private_key, algorithm=hashes.SHA256())
             .public_bytes(Encoding.PEM)
         )
 
         return private_key_pem, certificate_pem
 
-    def _gen_key_pair() -> tuple[rsa.RSAPrivateKey, rsa.RSAPublicKey]:
+    def _gen_key_pair(self) -> tuple[rsa.RSAPrivateKey, rsa.RSAPublicKey]:
         private_key = rsa.generate_private_key(
             key_size=_RSA_KEY_SIZE,
             public_exponent=_RSA_EXPONENT,

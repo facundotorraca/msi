@@ -1,12 +1,26 @@
 import os
-import zipfile
 import payloads
 from fastapi import FastAPI
+from utils.zip import zip_files
+from utils.file import save_file
 from datetime import datetime, UTC
 from fastapi.responses import FileResponse
 from services.revoker import RevokerService
 from services.generator import GeneratorService
 from services.validator import ValidatorService
+
+#################### CONSTS #####################
+ROOT_KEY_PATH = "./certs/root-ca.key"
+ROOT_CERT_PATH = "./certs/root-ca.pem"
+
+TEMP_SERVER_FILES = "./tmp"
+TEMP_GEN_CERTS = f"${TEMP_SERVER_FILES}/gencerts"
+
+OUTPUT_KEYS_NAME = "cert.key"
+OUTPUT_CERTS_NAME = "cert.pem"
+
+os.makedirs(TEMP_GEN_CERTS, exist_ok=True)
+#################################################
 
 ##################### APP #######################
 app = FastAPI(
@@ -16,11 +30,9 @@ app = FastAPI(
 #################################################
 
 ################ ROOT CERTIFICATE ###############
-ROOT_KEY_PATH = "./certs/root-ca.key"
-ROOT_CERT_PATH = "./certs/root-ca.pem"
-
 with open(ROOT_CERT_PATH, "rb") as f:
     root_cert_pem = f.read()
+
 with open(ROOT_KEY_PATH, "rb") as f:
     root_key_pem = f.read()
 #################################################
@@ -44,6 +56,7 @@ async def generate_certificate(request: payloads.CertificateRequest):
     )
 
     unix_time = datetime.now(UTC).timestamp()
+
     key_filename = "cert.key"
     cert_filename = "cert.pem"
     zip_filename = f"{unix_time}.zip"
@@ -52,19 +65,13 @@ async def generate_certificate(request: payloads.CertificateRequest):
     key_path = os.path.join("./tmp/gencerts", key_filename)
     cert_path = os.path.join("./tmp/gencerts", cert_filename)
 
-    os.makedirs("./tmp/gencerts", exist_ok=True)
+    save_file(private_key, key_path)
+    save_file(certificate, cert_path)
 
-    with open(key_path, "wb") as key_file:
-        key_file.write(private_key)
-    with open(cert_path, "wb") as cert_file:
-        cert_file.write(certificate)
-
-    with zipfile.ZipFile(zip_path, "w") as zipf:
-        zipf.write(key_path, key_filename)
-        zipf.write(cert_path, cert_filename)
+    zip_files(zip_path, {key_path: key_filename, cert_path: cert_filename})
 
     return FileResponse(
-        cert_path,
+        zip_path,
         headers={"Content-Disposition": f"attachment; filename={zip_filename}"},
     )
 

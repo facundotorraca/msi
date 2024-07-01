@@ -10,6 +10,7 @@ class ValidatorService:
     def verify_certificate(self, cert_pem: bytes) -> bool:
         cert = load_pem_x509_certificate(cert_pem)
         public_key = self.root_cert.public_key()
+
         try:
             public_key.verify(
                 cert.signature,
