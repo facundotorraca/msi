@@ -3,7 +3,7 @@ import zipfile
 from pathlib import Path
 
 
-def zip_files(zip_path: str, files: dict[Path, str]):
+def zip_files(zip_path: str, files: dict[Path, str]) -> str:
     """
     Creates a zip file.
 

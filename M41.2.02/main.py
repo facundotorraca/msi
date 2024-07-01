@@ -14,7 +14,7 @@ ROOT_KEY_PATH = "./certs/root-ca.key"
 ROOT_CERT_PATH = "./certs/root-ca.pem"
 
 TEMP_SERVER_FILES = "./tmp"
-TEMP_GEN_CERTS = f"${TEMP_SERVER_FILES}/gencerts"
+TEMP_GEN_CERTS = f"{TEMP_SERVER_FILES}/gencerts"
 
 OUTPUT_KEYS_NAME = "cert.key"
 OUTPUT_CERTS_NAME = "cert.pem"
@@ -55,24 +55,19 @@ async def generate_certificate(request: payloads.CertificateRequest):
         request.subject_name, request.is_ca, request.path_length
     )
 
-    unix_time = datetime.now(UTC).timestamp()
+    base_path = os.path.join(TEMP_GEN_CERTS, str(datetime.now(UTC).timestamp()))
 
-    key_filename = "cert.key"
-    cert_filename = "cert.pem"
-    zip_filename = f"{unix_time}.zip"
+    key_path = save_file(certificate, os.path.join(base_path, "cert.pem"))
+    cert_path = save_file(private_key, os.path.join(base_path, "cert.key"))
 
-    zip_path = os.path.join("./tmp/gencerts", zip_filename)
-    key_path = os.path.join("./tmp/gencerts", key_filename)
-    cert_path = os.path.join("./tmp/gencerts", cert_filename)
-
-    save_file(private_key, key_path)
-    save_file(certificate, cert_path)
-
-    zip_files(zip_path, {key_path: key_filename, cert_path: cert_filename})
+    zip_path = zip_files(
+        os.path.join(base_path, "cert.zip"),
+        {key_path: "cert.key", cert_path: "cert.pem"},
+    )
 
     return FileResponse(
         zip_path,
-        headers={"Content-Disposition": f"attachment; filename={zip_filename}"},
+        headers={"Content-Disposition": f"attachment; filename=cert.zip"},
     )
 
 
