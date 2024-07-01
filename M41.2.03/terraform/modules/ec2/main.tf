@@ -29,10 +29,11 @@ resource "aws_instance" "bwapp" {
 
   key_name = var.key_name
   vpc_security_group_ids = [aws_security_group.bwapp_sg.id]
+  tags = { Name = "msi-bwapp", project = "msi" }
 }
 
 resource "aws_security_group" "bwapp_sg" {
-  name        = "bwapp-sg"
+  name        = "msi-bwapp-sg"
   description = "Allow HTTP and SSH traffic into BWapp"
 
   ingress {
@@ -55,4 +56,6 @@ resource "aws_security_group" "bwapp_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = { Name = "msi-bwapp-sg", project = "msi" }
 }
