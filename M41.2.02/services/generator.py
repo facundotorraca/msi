@@ -19,8 +19,7 @@ class GeneratorService:
 
     def generate_certificate(
         self, subject_name: str, is_ca: bool = False, path_length: int = None
-    ) -> tuple:
-
+    ) -> tuple[bytes, bytes]:
         priv_key, pub_key = self._gen_key_pair()
 
         private_key_pem = priv_key.private_bytes(
@@ -45,10 +44,7 @@ class GeneratorService:
         return private_key_pem, certificate_pem
 
     def _gen_key_pair(self) -> tuple[rsa.RSAPrivateKey, rsa.RSAPublicKey]:
-        private_key = rsa.generate_private_key(
-            key_size=_RSA_KEY_SIZE,
-            public_exponent=_RSA_EXPONENT,
-        )
+        private_key = rsa.generate_private_key(_RSA_EXPONENT, _RSA_KEY_SIZE)
         public_key = private_key.public_key()
 
         return private_key, public_key
