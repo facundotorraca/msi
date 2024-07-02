@@ -23,7 +23,7 @@ echo "Generating RSA private key for root CA..."
 openssl genrsa -out "$CERTS_DIR/root-ca.key" $KEY_SIZE
 
 echo "Generating root certificate..."
-openssl req -x509 -new -nodes -key "$CERTS_DIR/root-ca.key" -sha256 -days $DAYS -out "$CERTS_DIR/root-ca.pem" \
+openssl req -x509 -new -nodes -key "$CERTS_DIR/rootcert.key" -sha256 -days $DAYS -out "$CERTS_DIR/rootcert.pem" \
     -subj "/CN=$COMMON_NAME" -config "$CONFIG_FILE"
 
 echo "Root certificate generated:"

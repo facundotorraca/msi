@@ -158,3 +158,9 @@ certs/root-ca.key
 
 # server temp files
 tmp/
+
+# generated certs
+cert.key
+cert.pem
+rootcert.key
+rootcert.pem
