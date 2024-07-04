@@ -2,14 +2,14 @@
 
 Este proyecto permite establecer una Autoridad Certificadora básica utilizando OpenSSL
 para generar el certificado raíz y FastAPI para gestionar operaciones de certificados 
-como la generación, verificación y revocación de certificados.
+como la generación, verificación y revocación de certificados. Además cuenta con un servidor web de prueba, donde podremos probar nuestros certificados generados
 
 ## Requisitos Previos
 
 - **OpenSSL**: Necesario para generar el certificado raíz.
 - **Python 3.8 o superior**
 - **Uvicorn**: Servidor para ejecutar aplicaciones FastAPI
-- **Curl**: Optional to the test cases
+- **Curl**: Opcional para casos de prueba
 
 ## Instalación
 
@@ -135,7 +135,7 @@ Puedes probar el servidor con el siguiente comando:
 curl -X GET "https://localhost/ping" --insecure
 ```
 
-El `--insecure` es necesario porque caso contrario recibiremos el siguiente error:
+El flag `--insecure` es necesario porque caso contrario recibiremos el siguiente error:
 
 ````
 curl: (60) SSL certificate problem: unable to get local issuer certificate
