@@ -17,9 +17,7 @@ class GeneratorService:
         self.root_cert = x509.load_pem_x509_certificate(root_cert_pem)
         self.root_private_key = load_pem_private_key(root_key_pem, password=None)
 
-    def generate_certificate(
-        self, subject_name: str, is_ca: bool = False, path_length: int = None
-    ) -> tuple[bytes, bytes]:
+    def generate_certificate(self, subject_name: str) -> tuple[bytes, bytes]:
         priv_key, pub_key = self._gen_key_pair()
 
         private_key_pem = priv_key.private_bytes(
@@ -36,7 +34,6 @@ class GeneratorService:
             .not_valid_after(n_days_from_now(_DEFAULT_VALIDITY_IN_DAYS))
             .serial_number(x509.random_serial_number())
             .public_key(pub_key)
-            .add_extension(x509.BasicConstraints(ca=is_ca, path_length=path_length), critical=True)
             .sign(private_key=self.root_private_key, algorithm=hashes.SHA256())
             .public_bytes(Encoding.PEM)
         )

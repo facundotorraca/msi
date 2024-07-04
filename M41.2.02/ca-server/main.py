@@ -11,8 +11,8 @@ from services.generator import GeneratorService
 from services.validator import ValidatorService
 
 ################################# CONSTS #################################
-ROOT_KEY_PATH = "./certs/root-ca.key"
-ROOT_CERT_PATH = "./certs/root-ca.pem"
+ROOT_KEY_PATH = "./certs/root.key"
+ROOT_CERT_PATH = "./certs/root.pem"
 
 TEMP_SERVER_FILES = "./tmp"
 TEMP_CRL_FILES = f"{TEMP_SERVER_FILES}/crl"
@@ -52,11 +52,7 @@ async def root():
 
 @app.post("/generate")
 async def generate_certificate(request: payloads.CertificateRequest):
-    private_key, certificate = generator.generate_certificate(
-        request.subject_name,
-        request.is_ca,
-        request.path_length,
-    )
+    private_key, certificate = generator.generate_certificate(request.subject_name)
 
     # Convert binary data to a suitable format for JSON (e.g., Base64)
     certificate_encoded = certificate.decode("utf-8")

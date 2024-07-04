@@ -162,5 +162,5 @@ tmp/
 # generated certs
 cert.key
 cert.pem
-rootcert.key
-rootcert.pem
+root.key
+root.pem

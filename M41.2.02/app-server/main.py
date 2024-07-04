@@ -8,9 +8,9 @@ KEY_FILE = "./certs/cert.key"
 PEM_FILE = "./certs/cert.pem"
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, TLS!"}
+@app.get("/ping")
+def ping():
+    return {"message": "TLS pong!"}
 
 
 if __name__ == "__main__":
