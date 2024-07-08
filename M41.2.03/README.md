@@ -74,7 +74,7 @@ terraform apply
 Luego de la ejecución, terraform dará los siguientes resultados:
 
 ```sh
-* cloudflare_record = "<Nombre del dominio>"
+* cloudflare_record  = "<Nombre del dominio>"
 * ec2_public_ip     = "<IP Publica del servicio>"
 * ec2_public_dns    = "<DNS Publico para acceder>"
 * ec2_instance_id   = "<ID de la instancia en EC2>"

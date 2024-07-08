@@ -31,14 +31,14 @@ resource "cloudflare_ruleset" "bwapp_waf_ruleset" {
     action      = "block"
     enabled     = true
     description = "sql-injections"
-    expression  = "(http.request.method eq \"GET\" and (http.request.uri.query contains \"select\" or http.request.uri.query contains \"insert\" or http.request.uri.query contains \"drop\" or http.request.uri.query contains \"union\" or http.request.uri.query contains \"update\" or http.request.uri.query contains \"exec\" or http.request.uri.query contains \"delete\"))"
+    expression = "(http.request.method eq \"GET\" and (http.request.uri.query contains \"select\" or http.request.uri.query contains \"insert\" or http.request.uri.query contains \"drop\" or http.request.uri.query contains \"union\" or http.request.uri.query contains \"update\" or http.request.uri.query contains \"exec\" or http.request.uri.query contains \"delete\"))"
   }
 
   rules {
     action      = "block"
     enabled     = true
     description = "xss-injections"
-    expression  = "(http.request.method eq \"GET\" and (http.request.uri.query contains \"<script>\" or http.request.uri.query contains \"%3Cscript%3E\"))"
+    expression = "(http.request.method eq \"GET\" and (http.request.uri.query contains \"<script>\" or http.request.uri.query contains \"%3Cscript%3E\"))"
   }
 
   rules {
