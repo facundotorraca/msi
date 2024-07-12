@@ -14,6 +14,10 @@ La instancia se creará con un par de claves especificado para el acceso seguro 
 3. **AWS CLI**: Instalar y configurar AWS CLI con los permisos necesarios.
 4. **Terraform**: Instalar Terraform en tu máquina local.
 
+## Arquitectura
+
+
+
 ## Setup
 
 ### 1. Configurar AWS CLI
@@ -74,7 +78,7 @@ terraform apply
 Luego de la ejecución, terraform dará los siguientes resultados:
 
 ```sh
-* cloudflare_record  = "<Nombre del dominio>"
+* cloudflare_record = "<Nombre del dominio>"
 * ec2_public_ip     = "<IP Publica del servicio>"
 * ec2_public_dns    = "<DNS Publico para acceder>"
 * ec2_instance_id   = "<ID de la instancia en EC2>"
@@ -117,4 +121,39 @@ terraform destroy
 
 Confirma la acción cuando se te solicite escribiendo "yes".
 
+## Ejemplos
 
+A continuación mostraremos alguno ejemplos de como poder probar la aplicación.
+Como resultado de correr el setup, deberiamos tener 2 links:
+
+* `http://<ec2_public_dns>.com` -> DNS publico de la instacia de EC2. Este link nos conecta a la aplicación _bWAPP_ sin pasar por _Cloudflare_
+
+* `https://<cloudflare_record>.com` -> Dirección que pasa por el DNS de _Cloudflare_.
+
+Si bien ambos links llevan a la misma aplicación (e instancia EC2), el primero no tiene la protección de nuestro WAF.
+
+Recomendamos probar cada uno de los ejemplos en ambos links, para poder visualizar correctamente el funcionamiento del WAF
+
+### 1. SQL Injection
+
+```sql
+iron' union select 1,user(),database(),load_file('/etc/passwd'),version(),6,7 -- - %'
+```
+
+Este SQL injection manipula una consulta añadiendo una sentencia **UNION** para combinar los resultados con otra consulta que recupera información sensible del sistema, como el usuario actual (_`user()`_), la base de datos actual (_`database()`_), el contenido del archivo del sistema (_`load_file('/etc/passwd')`_), y la versión del servidor (_`version()`_).
+
+La secuencia comienza con una entrada de texto maliciosa 'iron' que cierra una cadena de texto abierta en la consulta original, seguido de la inyección **UNION SELECT** y las funciones mencionadas, finalizando con un comentario **-- - %'** para ignorar el resto de la consulta original.
+
+[SQL Injection Mitre attack](https://attack.mitre.org/techniques/T1190/)
+
+### 2. XSS Injection
+
+```js
+<script>alert(document.cookie)
+</script>
+```
+Este XSS injection se basa en insertar código JavaScript malicioso a través de entradas de usuario. El input1 `<script>alert(document.cookie)` introduce una etiqueta `<script>` que ejecuta el comando alert(document.cookie), mostrando las cookies del usuario en una ventana de alerta.
+
+El input2 cierra la etiqueta `<script>` abierta, asegurando que cualquier otro contenido después del script no se interprete como parte de él, lo que puede evadir restricciones de seguridad y hacer que el navegador ejecute el script malicioso
+
+[XSS Injection Mitre attack](https://attack.mitre.org/techniques/T1189/)
