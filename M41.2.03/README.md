@@ -16,7 +16,7 @@ La instancia se creará con un par de claves especificado para el acceso seguro 
 
 ## Arquitectura
 
-
+![arch](resources/arch.png "Arquitectura")
 
 ## Setup
 
@@ -137,7 +137,7 @@ Recomendamos probar cada uno de los ejemplos en ambos links, para poder visualiz
 ### 1. SQL Injection
 
 ```sql
-iron' union select 1,user(),database(),load_file('/etc/passwd'),version(),6,7 -- - %'
+iron man' union select 1,user(),database(),load_file('/etc/passwd'),version(),6,7 -- - %'
 ```
 
 Este SQL injection manipula una consulta añadiendo una sentencia **UNION** para combinar los resultados con otra consulta que recupera información sensible del sistema, como el usuario actual (_`user()`_), la base de datos actual (_`database()`_), el contenido del archivo del sistema (_`load_file('/etc/passwd')`_), y la versión del servidor (_`version()`_).
@@ -149,11 +149,11 @@ La secuencia comienza con una entrada de texto maliciosa 'iron' que cierra una c
 ### 2. XSS Injection
 
 ```js
-<script>alert(document.cookie)
-</script>
+input1: <script>alert(document.cookie)
+ipunt2: </script>
 ```
-Este XSS injection se basa en insertar código JavaScript malicioso a través de entradas de usuario. El input1 `<script>alert(document.cookie)` introduce una etiqueta `<script>` que ejecuta el comando alert(document.cookie), mostrando las cookies del usuario en una ventana de alerta.
+Este XSS injection se basa en insertar código JavaScript malicioso a través de entradas de usuario. El _input-1_ `<script>alert(document.cookie)` introduce una etiqueta `<script>` que ejecuta el comando alert(document.cookie), mostrando las cookies del usuario en una ventana de alerta.
 
-El input2 cierra la etiqueta `<script>` abierta, asegurando que cualquier otro contenido después del script no se interprete como parte de él, lo que puede evadir restricciones de seguridad y hacer que el navegador ejecute el script malicioso
+El _input-2_ cierra la etiqueta `<script>` abierta, asegurando que cualquier otro contenido después del script no se interprete como parte de él, lo que puede evadir restricciones de seguridad y hacer que el navegador ejecute el script malicioso
 
 [XSS Injection Mitre attack](https://attack.mitre.org/techniques/T1189/)
