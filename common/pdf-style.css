@@ -69,10 +69,15 @@ pre, code {
 pre {
     overflow: auto;
     padding: 10px;
+    font-size: 0.85em;
+    white-space: pre-wrap; /* Ensures long lines are wrapped */
+    word-wrap: break-word; /* Ensures long words are wrapped */
 }
 
 code {
     font-size: 0.85em;
+    white-space: pre-wrap; /* Ensures long lines are wrapped */
+    word-wrap: break-word; /* Ensures long words are wrapped */
 }
 
 /* Blockquote styles */

@@ -1,5 +1,7 @@
 # Instancia EC2 con Docker y BWAPP usando Terraform
 
+[Github - Codigo fuente](https://github.com/facundotorraca/msi-2024-g6/tree/master/M41.2.03)
+
 Esta guía proporciona instrucciones paso a paso sobre cómo usar Terraform 
 para crear una instancia EC2 en AWS, instalar Docker y ejecutar la aplicación BWAPP.
 La instancia se creará con un par de claves especificado para el acceso seguro por SSH.
@@ -148,9 +150,9 @@ La secuencia comienza con una entrada de texto maliciosa 'iron' que cierra una c
 
 ### 2. XSS Injection
 
-```js
-input1: <script>alert(document.cookie)
-ipunt2: </script>
+```html
+ <!-- Linea 1 --> <script>alert(document.cookie)
+ <!-- Linea 2 --> </script>                       
 ```
 Este XSS injection se basa en insertar código JavaScript malicioso a través de entradas de usuario. El _input-1_ `<script>alert(document.cookie)` introduce una etiqueta `<script>` que ejecuta el comando alert(document.cookie), mostrando las cookies del usuario en una ventana de alerta.
 
