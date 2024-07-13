@@ -1,14 +1,14 @@
-# Instancia EC2 con Docker y BWAPP usando Terraform
+# Resumen ejecutivo
 
 El proyecto consiste en el despliegue mediante infraestructura como código (IaC) de una Arquitectura Cloud, donde se expone la aplicación con vulnerabilidades llamada buggy web application (bWAPP) en la Cloud de AWS. 
 
 Luego  se la seguriza mediante un servicio WAF en nube de Cloudflare, con el objetivo de prevenir un ataque seleccionado de las tácticas y técnicas representadas en la base de conocimientos de MITRE ATT&CK®.
 
-A continuación, se detallan las etapas ejecutadas y en proceso de desarrollo.
+A continuación, detallaremos las etapas ejecutadas y en proceso de desarrollo
+
+# Instancia EC2 con Docker y BWAPP usando Terraform
 
 > Pueden consultar y descargar el codigo fuente de [Github - Codigo fuente](https://github.com/facundotorraca/msi-2024-g6/tree/master/M41.2.03)
-
-
 
 Esta guía proporciona instrucciones paso a paso sobre cómo usar Terraform 
 para crear una instancia EC2 en AWS, instalar Docker y ejecutar la aplicación BWAPP.
@@ -16,8 +16,6 @@ para crear una instancia EC2 en AWS, instalar Docker y ejecutar la aplicación B
 La instancia se creará con un par de claves especificado para el acceso seguro por SSH.
 
 > :warning: **imporante**: Este setup tiene un costo sobre la cuenta de Amazon, que si bien es minimo, no es totalemnte gratis. Esto se debe a que Amazon pasó a cobrar por las IPs publicas de sus servicios gratuitos (0.005 USD por hora). Recuerda ejecutrar el paso #6 para realizar la limpieza y evitar sorpresas!
-
-
 
 ## Requisitos previos
 
