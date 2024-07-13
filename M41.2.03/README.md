@@ -151,8 +151,8 @@ La secuencia comienza con una entrada de texto maliciosa 'iron' que cierra una c
 ### 2. XSS Injection
 
 ```html
- <!-- Linea 1 --> <script>alert(document.cookie)
- <!-- Linea 2 --> </script>                       
+<!-- Linea 1 --> <script>alert(document.cookie)
+</script> <!-- Linea 2 -->                       
 ```
 Este XSS injection se basa en insertar código JavaScript malicioso a través de entradas de usuario. El _input-1_ `<script>alert(document.cookie)` introduce una etiqueta `<script>` que ejecuta el comando alert(document.cookie), mostrando las cookies del usuario en una ventana de alerta.
 
