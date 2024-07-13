@@ -4,7 +4,7 @@ Esta guía proporciona instrucciones paso a paso sobre cómo usar Terraform
 para crear una instancia EC2 en AWS, instalar Docker y ejecutar la aplicación BWAPP.
 La instancia se creará con un par de claves especificado para el acceso seguro por SSH.
 
-> :warning: **imporante**: Este setup tiene un costo sobre la cuenta de Amazon, que si bien es minimo, no es totalemnte gratis. Esto se debe a que Amazon pasó a cobrar por las IPs publicas de sus servicios gratuitos (0.005 USD por hora). Recuerda ejecutrar el paso #4 para realizar la limpieza y evitar sorpresas!
+> :warning: **imporante**: Este setup tiene un costo sobre la cuenta de Amazon, que si bien es minimo, no es totalemnte gratis. Esto se debe a que Amazon pasó a cobrar por las IPs publicas de sus servicios gratuitos (0.005 USD por hora). Recuerda ejecutrar el paso #6 para realizar la limpieza y evitar sorpresas!
 
 ## Requisitos previos
 
