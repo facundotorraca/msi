@@ -7,11 +7,6 @@ terraform {
   }
 }
 
-data "aws_route53_zone" "root_domain_zone" {
-  name = var.root_domain
-  private_zone = false
-}
-
 resource "aws_instance" "vampi" {
   ami           = var.ami_id
   instance_type = var.instance_type
@@ -29,7 +24,7 @@ resource "aws_instance" "vampi" {
 
               # Pull and run the BWAPP Docker image
               docker pull erev0s/vampi
-              docker run -d -p 5000:5000 erev0s/vampi
+              docker run -d -p 80:5000 erev0s/vampi
               EOF
 
   key_name = var.key_name
@@ -63,12 +58,4 @@ resource "aws_security_group" "vampi_sg" {
   }
 
   tags = { Name = "msi-vampi-sg", project = "msi" }
-}
-
-resource "aws_route53_record" "vampi_dns" {
-  zone_id = data.aws_route53_zone.root_domain_zone.id
-  name    = "vampi.${var.root_domain}"             
-  type    = "A"                                    
-  ttl     = 300                                    
-  records = [aws_instance.vampi.public_ip]
 }

@@ -1,8 +1,3 @@
-variable "root_domain" {
-  description = "Application root domain"
-  type        = string
-}
-
 variable "ami_id" {
   description = "The AMI ID for the EC2 instance."
   default     = "ami-08c40ec9ead489470"  # Ubuntu Server 20.04 LTS AMI

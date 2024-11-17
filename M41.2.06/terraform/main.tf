@@ -19,5 +19,4 @@ provider "aws" {
 
 module "vampi_ec2" {
   source = "./modules/ec2"
-  root_domain = var.root_domain
 }
