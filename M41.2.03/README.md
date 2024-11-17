@@ -68,6 +68,14 @@ Inicializa la configuración de Terraform. Esto descargará los plugins necesari
 terraform init
 ```
 
+> Nota: para utilizar **cloudflare** en terraform, vas a tener que crear una API Key. Esta debe contener los siguientes permisos:
+> - Transform Rules:Edit, 
+> - Zone WAF:Edit 
+> - Zone Settings:Edit
+> - Zone:Edit
+> - Firewall Services:Edit
+> - DNS:Edit
+
 #### 4.2 Plan de la configuracion
 
 Genera y revisa el plan de ejecución para la infraestructura. Esto te mostrará lo que Terraform va a crear o cambiar.
