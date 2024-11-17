@@ -6,7 +6,7 @@ variable "ami_id" {
 
 variable "key_name" {
   description = "The name of the key pair to use for the instance."
-  default     = "si-bwapp"
+  default     = "msi-keypair"
   type        = string
 }
 
