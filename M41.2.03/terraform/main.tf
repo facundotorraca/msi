@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "ft-msi-terraform"
-    key            = "dev/terraform.tfstate"
+    key            = "M41.2.03/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
   }
@@ -32,6 +32,6 @@ module "bwapp_ec2" {
 
 module "bwapp_cloudflare" {
   source             = "./modules/cloudflare"
-  domain             = var.app_domain
+  domain             = var.root_domain
   instance_public_ip = module.bwapp_ec2.public_ip 
 }

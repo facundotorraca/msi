@@ -9,3 +9,8 @@ variable "aws_region" {
   type        = string
   default     = "us-east-1"
 }
+
+variable "cloudflare_token" {
+  description = "API key for Cloudflare account"
+  type        = string
+}

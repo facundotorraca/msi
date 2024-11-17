@@ -12,3 +12,8 @@ output "ec2_public_dns" {
   description = "VAmPI EC2 Instance Public DNS"
   value       = module.vampi_ec2.public_dns
 }
+
+output "cloudflare_record" {
+  description = "Cloudflare record for the VAmPI instance"
+  value       = module.vampi_cloudflare.record
+}
