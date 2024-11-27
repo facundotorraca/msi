@@ -69,12 +69,13 @@ terraform init
 ```
 
 > Nota: para utilizar **cloudflare** en terraform, vas a tener que crear una API Key. Esta debe contener los siguientes permisos:
-> - Transform Rules:Edit, 
-> - Zone WAF:Edit 
-> - Zone Settings:Edit
-> - Zone:Edit
-> - Firewall Services:Edit
-> - DNS:Edit
+> 
+> - Transform Rules   | Edit
+> - Zone WAF          | Edit 
+> - Zone Settings     | Edit
+> - Zone              | Edit
+> - Firewall Services | Edit
+> - DNS               | Edit
 
 #### 4.2 Plan de la configuracion
 
